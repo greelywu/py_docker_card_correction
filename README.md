@@ -33,7 +33,8 @@ modelscope download --model iic/cv_resnet18_card_correction
 cd /home
 
 #克隆项目
-git clone https://github.com/greelywu/py_docker_card_correction.git
+git clone https://github.com/greelywu/py_docker_card_correction.git  #github国内访问很慢或者无法访问的用下面马云的仓库链接
+git clone https://gitee.com/wuyan1983/py_docker_card_correction      #马云(gitee.com）仓库链接
 cd py_docker_card_correction
 
 # 运行证卡处理工具
