@@ -21,12 +21,12 @@ def query_database_to_csv():
     try:
         # 连接数据库
         connection = pymysql.connect(
-            host='10.180.1.10',
-            database='photovoltaic_xlf',
-            port=3386,
-            user='xlzhsyjz',
-            password='Xlzh@sy#89H5e-796Ty',
-            charset='utf8mb4'
+            host='',
+            database='',
+            port=,
+            user='',
+            password='',
+            charset=''
         )
         
         logger.info("数据库连接成功")

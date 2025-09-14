@@ -1,8 +1,0 @@
-project/
-├── main.py              # 主程序入口
-├── card_processor.py    # CardProcessor类
-├── image_utils.py       # 图像处理工具函数
-├── batch_processing.py  # 批量处理功能
-├── pdf_generator.py     # PDF生成功能
-├── gradio_interface.py  # Gradio界面
-└── config.py           # 配置和常量
