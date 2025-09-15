@@ -1,51 +1,6 @@
-# 证卡处理工具 - 部署使用说明（ModelScope 模型下载到本地Docker 容器）
+# 证卡图片处理工具
 
-## 环境搭建
-
-### 启动Docker容器
-```bash
-# 下载官方镜像
-docker pull modelscope-registry.cn-beijing.cr.aliyuncs.com/modelscope-repo/modelscope:ubuntu22.04-py311-torch2.3.1-1.29.0
-
-# 运行容器（将/path/to/your/workspace替换为实际工作目录）
-docker run -it --volume=/path/to/your/workspace:/home -p 8080:8080 --name modelscope-container modelscope-registry.cn-beijing.cr.aliyuncs.com/modelscope-repo/modelscope:ubuntu22.04-py311-torch2.3.1-1.29.0 /bin/bash
-```
-
-### 进入Docker容器
-如果容器已在后台运行，使用以下命令进入：
-```bash
-# 查看运行中的容器
-docker ps
-
-# 进入容器（使用容器名称或ID）
-docker exec -it modelscope-container /bin/bash
-```
-
-### 安装依赖和下载模型
-在Docker容器内执行：
-```bash
-# 安装所需依赖包
-pip install modelscope gradio opencv-python pillow pandas reportlab numpy
-
-# 下载证卡校正模型（重要步骤）
-modelscope download --model iic/cv_resnet18_card_correction
-# 进入工作目录
-cd /home
-
-#克隆项目
-git clone https://github.com/greelywu/py_docker_card_correction.git  #github国内访问很慢或者无法访问的用下面码云的仓库链接
-git clone https://gitee.com/wuyan1983/py_docker_card_correction      #码云(gitee.com）仓库链接
-cd py_docker_card_correction
-
-# 运行证卡处理工具
-python main.py
-```
-
-### 访问应用
-程序启动后，通过浏览器访问：
-```
-http://localhost:8080
-```
+这个工具特别适合需要批量处理身份证、银行卡等证卡图片的场景，如金融、政务、企业人事等领域的自动化处理需求。
 
 ## 核心功能
 
@@ -93,6 +48,53 @@ project/
 └── config.py           # 配置和常量
 ```
 
+## 环境搭建及代码运行
+
+### 启动Docker容器
+```bash
+# 下载官方镜像
+docker pull modelscope-registry.cn-beijing.cr.aliyuncs.com/modelscope-repo/modelscope:ubuntu22.04-py311-torch2.3.1-1.29.0
+
+# 运行容器（将/path/to/your/workspace替换为实际工作目录）
+docker run -it --volume=/path/to/your/workspace:/home -p 8080:8080 --name modelscope-container modelscope-registry.cn-beijing.cr.aliyuncs.com/modelscope-repo/modelscope:ubuntu22.04-py311-torch2.3.1-1.29.0 /bin/bash
+```
+
+### 进入Docker容器
+如果容器已在后台运行，使用以下命令进入：
+```bash
+# 查看运行中的容器
+docker ps
+
+# 进入容器（使用容器名称或ID）
+docker exec -it modelscope-container /bin/bash
+```
+
+### 安装依赖和下载模型
+在Docker容器内执行：
+```bash
+# 安装所需python依赖包
+pip install modelscope gradio opencv-python pillow pandas reportlab numpy pymysql
+
+# 安装png压缩工具
+sudo apt update && sudo apt install -y pngquant optipng
+
+# 下载证卡校正模型（重要步骤）
+modelscope download --model iic/cv_resnet18_card_correction
+```
+
+### 克隆项目
+
+```shell
+# 进入工作目录
+cd /home
+
+#克隆项目（github、码云二选一）
+git clone https://github.com/greelywu/py_docker_card_correction.git  #github国内访问很慢或者无法访问的用下面码云的仓库链接
+git clone https://gitee.com/wuyan1983/py_docker_card_correction      #码云(gitee.com）仓库链接
+
+cd py_docker_card_correction
+```
+
 ### 数据库配置
 
 在`batch_processing.py`中修改数据库连接参数:
@@ -106,6 +108,20 @@ connection = pymysql.connect(
     password='', # 密码
     charset=''          # 字符集
 )
+```
+
+### 启动程序
+
+```
+# 运行证卡处理工具
+python main.py
+```
+
+### 访问应用
+
+程序启动后，通过浏览器访问：
+```
+http://localhost:8080
 ```
 
 ## 使用说明
@@ -169,5 +185,3 @@ CSV文件应包含以下列（无表头）:
 2. **数据库连接失败**: 检查数据库配置参数
 3. **中文显示问题**: 检查系统中文字体安装
 4. **内存不足**: 减少批量处理的数量或增加系统内存
-
-这个工具特别适合需要批量处理身份证、银行卡等证卡图片的场景，如金融、政务、企业人事等领域的自动化处理需求。
